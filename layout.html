@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}سوشيال خفيف{% endblock %}</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+  <div class="max-w-2xl mx-auto py-6 px-4">
+    <header class="flex items-center justify-between mb-6">
+      <div class="text-xl font-bold">شبكتي</div>
+      <div class="flex gap-3 items-center">
+        {% if user %}
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm">
+              {{ user.username[0]|upper }}
+            </div>
+            <div>{{ user.username }}</div>
+          </div>
+          <a href="{{ url_for('logout') }}" class="text-sm px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600">خروج</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="text-sm px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600">دخول</a>
+          <a href="{{ url_for('register') }}" class="text-sm px-3 py-1 border border-blue-500 rounded-md hover:bg-blue-50">سجل</a>
+        {% endif %}
+      </div>
+    </header>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="space-y-2 mb-4">
+          {% for m in messages %}
+            <div class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-2 rounded-md">{{ m }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </div>
+
+  <footer class="text-center text-xs text-gray-500 mt-10">
+    نسخة خفيفة مبنية بـ Flask - تقدر تطورها بعد
+  </footer>
+
+  <script>
+    async function doLike(postId, btn) {
+      try {
+        const res = await fetch(`/like/${postId}`, { method: "POST" });
+        const data = await res.json();
+        if (data.likes !== undefined) {
+          btn.querySelector(".count").innerText = data.likes;
+          btn.classList.add("text-red-500");
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  </script>
+</body>
+</html>

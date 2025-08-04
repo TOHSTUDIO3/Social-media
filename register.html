@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title %}تسجيل حساب{% endblock %}
+{% block content %}
+  <div class="bg-white p-6 rounded-lg shadow">
+    <h2 class="text-2xl font-semibold mb-4">إنشاء حساب جديد</h2>
+    <form method="post" class="space-y-4">
+      <div>
+        <label class="block text-sm">اسم المستخدم</label>
+        <input name="username" required class="w-full border px-3 py-2 rounded-md" placeholder="مثال: ali123" />
+      </div>
+      <div>
+        <label class="block text-sm">كلمة المرور</label>
+        <input name="password" type="password" required class="w-full border px-3 py-2 rounded-md" placeholder="••••••" />
+      </div>
+      <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700">سجل</button>
+    </form>
+    <p class="mt-4 text-sm">عندك حساب؟ <a href="{{ url_for('login') }}" class="text-blue-600 underline">دخول</a></p>
+  </div>
+{% endblock %}
